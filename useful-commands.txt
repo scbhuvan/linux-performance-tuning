@@ -1,0 +1,46 @@
+1. High CPU Usage To find processes consuming the most CPU, you can use top, htop, ps, and pidstat.
+
+###### Method 1: top (Real-time and Interactive)
+
+top is the most common and versatile tool for real-time monitoring.
+
+top -bn1 | head -n 17 | tail -n 10
+
+top: Starts the top command.
+-b: Batch mode (non-interactive).
+-n1: Exit after one iteration.
+| head -n 17: Grabs the first 17 lines (header + 10 processes).
+| tail -n 10: Grabs the last 10 lines (the top 10 processes).
+How to use interactively:
+Just run top.
+
+Press P (capital P) to sort by CPU usage.
+The first 10 processes listed after the header are your top CPU consumers.
+
+###### Method 2: ps (Snapshot) --> ps provides a snapshot of current processes.
+
+ps aux --sort=-%cpu | head -n 11
+
+ps aux: Shows all processes, including those of other users (a), processes without a controlling terminal (x), and displays user/group names (u).
+--sort=-%cpu: Sorts by CPU usage in descending order.
+| head -n 11: Displays the header and the top 10 processes.
+
+###### Method 3: htop (More User-Friendly Interactive) --htop is an enhanced version of top with a more intuitive interface. You might need to install it:
+
+Red Hat/CentOS: sudo yum install htop
+Ubuntu/Debian: sudo apt install htop
+Once installed, just run htop.
+
+Processes are usually sorted by CPU usage by default. If not, press F6 and select CPU%.
+The top 10 processes will be clearly visible.
+
+###### Method 4: pidstat (from sysstat package) pidstat provides process-specific statistics. You need to install sysstat:
+
+Red Hat/CentOS: sudo yum install sysstat
+Ubuntu/Debian: sudo apt install sysstat
+
+pidstat -u 1 1 | head -n 17 | tail -n 10
+
+pidstat -u: Reports CPU utilization.
+1 1: Takes one sample with a 1-second interval.
+The output will show CPU usage for each process. You'll need to manually identify the top 10 or parse the output. For a quick view, combine with awk or sort.
